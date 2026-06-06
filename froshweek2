@@ -2,18 +2,6 @@
 
 using namespace std;
 
-#define usopen(filename) do{freopen(filename".in", "r", stdin); freopen(filename".out", "w", stdout);}while(0);
-#define f first
-#define s second
-#define ll long long
-
-bool cmp(pair<int, int>& a, pair<int, int>& b){
-    if (a.s == b.s){
-        return a.f < b.f;
-    }
-    return a.s < b.s;
-}
-
 int main(){
     int n, m; cin >> n >> m;
     vector<int> a(n), b(m);
