@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define usopen(filename) do{freopen(filename".in", "r", stdin); freopen(filename".out", "w", stdout);}while(0);
+#define f first
+#define s second
+#define ll long long
+
+bool cmp(pair<int, int>& a, pair<int, int>& b){
+    if (a.s == b.s){
+        return a.f < b.f;
+    }
+    return a.s < b.s;
+}
+
+int main(){
+    int n, m, k; cin >> n >> m >> k;
+    vector<double> a(n), b(m+k);
+    for (int i = 0; i < n; i++){
+        cin >> a[i];
+    }
+    for (int i = 0; i < m; i++){
+        cin >> b[i];
+    }
+    for (int i = 0; i < k; i++){
+        double d; cin >> d;
+        b[m+i] = d/sqrt(2);
+    }
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+    int ca = 0, cb = 0;
+    int ans = 0;
+    while (ca < n && cb < m+k){
+        if (a[ca] > b[cb]){
+            ans++;
+            ca++, cb++;
+        }else{
+            ca++;
+        }
+    }
+    cout << ans << endl;
+    return 0;
+}
