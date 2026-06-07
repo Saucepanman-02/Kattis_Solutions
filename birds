@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define usopen(filename) do{freopen(filename".in", "r", stdin); freopen(filename".out", "w", stdout);}while(0);
+#define f first
+#define s second
+#define ll long long
+#define db double
+#define pii pair<int, int>
+#define pdd pair<db, db>
+
+
+int main(){
+    int l, d, n; cin >> l >> d >> n;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++){
+        cin >> a[i];
+    }
+    sort(a.begin(), a.end());
+    int ans = 0;
+    if (n == 0){
+        int c = 6;
+        while (c <= l-6){
+            ans++;
+            c += d;
+        }
+        cout << ans << endl;
+        return 0;
+    }
+    for (int i = 0; i < n-1; i++){
+        db c = a[i+1]-a[i];
+        int cr = c/d;
+        cr--;
+        ans += cr;
+    }
+    int c1 = a[0]-d;
+    while (c1 >= 6){
+        ans++;
+        c1 -= d;
+    }
+    c1 = a[n-1]+d;
+    while ((l-c1) >= 6){
+        ans++;
+        c1 += d;
+    }
+    cout << ans << endl;
+    return 0;
+}
