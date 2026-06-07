@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define usopen(filename) do{freopen(filename".in", "r", stdin); freopen(filename".out", "w", stdout);}while(0);
+#define f first
+#define s second
+#define ll long long
+#define db double
+#define pii pair<int, int>
+#define pdd pair<db, db>
+
+bool cmp(pii &a, pii &b){
+    if (a.s == b.s){
+        return a.f > b.f;
+    }
+    return a.s > b.s;
+}
+
+int main(){
+    int t; cin >> t;
+    while (t--){
+    int n; cin >> n;
+    vector<int> a(3*n);
+    for (int i = 0; i < 3*n; i++){
+        cin >> a[i];
+    }
+    sort(a.begin(), a.end());
+    int cl = 0, cr = 3*n-1;
+    int ans = 0;
+    while (cr > cl){
+        ans += a[cr-1];
+        cr -= 2;
+        cl++;
+    }
+    cout << ans << endl;
+}
+    return 0;
+}
