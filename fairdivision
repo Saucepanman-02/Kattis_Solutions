@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define usopen(filename) do{freopen(filename".in", "r", stdin); freopen(filename".out", "w", stdout);}while(0);
+#define f first
+#define s second
+#define ll long long
+#define db double
+#define pii pair<int, int>
+#define pdd pair<db, db>
+
+bool cmp(pii &a, pii&b){
+    if (a.f == b.f){
+        return a.s > b.s;
+    }
+    return a.f < b.f;
+}
+
+
+int main(){
+    int t; cin >> t;
+    while (t--){
+        int p, n; cin >> p >> n;
+        vector<pair<int, int>> a(n);
+        int sum = 0;
+        for (int i = 0; i < n; i++){
+            cin >> a[i].f;
+            sum += a[i].f;
+            a[i].s = i;
+        }
+        if (sum < p){
+            cout << "IMPOSSIBLE" << '\n';
+        }else{
+            sort(a.begin(), a.end(), cmp);
+            int avg;
+            int c = 0;
+            vector<int> b(n);
+            sum = p;
+            while (c < n){
+                avg = (sum)/(n-c);
+                if (a[c].first < avg){
+                    b[a[c].s] = a[c].f;
+                    sum -= a[c].f;
+                }else{
+                    b[a[c].s] = (sum)/(n-c);
+                    sum -= b[a[c].s];
+                }
+                c++;
+            }
+            for (int i = 0; i < n; i++){
+                cout << b[i];
+                if (i != n-1){
+                    cout << ' ';
+                }
+            }
+            cout << endl;
+        }
+    }
+    return 0;
+}
