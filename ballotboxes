@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main(){
+    int n, b; 
+    cin >> n >> b;
+    while (!(n == -1 && b == -1)){
+        priority_queue<pair<int, pair<int, int>>> pq;
+        vector<int> a(n);
+        for (int i = 0; i < n; i++){
+            cin >> a[i];
+            pq.push({a[i], {i, 1}});
+        }
+        if (n == b){
+            cout << pq.top().first << '\n';
+        }else{
+        for (int i = 0; i < b-n; i++){
+            auto u = pq.top(); pq.pop();
+            int c = u.second.second; c++;
+            int db;
+            if (a[u.second.first]%c == 0){
+                db = a[u.second.first]/c;
+            }else{
+                double cr = a[u.second.first];
+                cr = cr/c+1;
+                db = int(cr);
+            }
+            
+            pq.push({db, {u.second.first, c}});
+        }
+        cout << pq.top().first << '\n';
+    }
+        cin >> n >> b;
+    }
+    
+    return 0;
+}

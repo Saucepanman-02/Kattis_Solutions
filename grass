@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define usopen(filename) do{freopen(filename".in", "r", stdin); freopen(filename".out", "w", stdout);}while(0);
+
+bool cmp(pair<double, double> &a, pair<double, double> &b){
+    if (a.first == b.first){
+        return a.second > b.second;
+    }
+    return a.first < b.first;
+}
+
+int main(){
+    int n; double l, w; double x, r; double t; double curmax; double cur; int ans, c; double mx;
+    vector<pair<double, double>> a;
+    while (cin >> n >> l >> w){
+        a.resize(n);
+        bool flag1 = false, flag2 = false;
+        for (int i = 0; i < n; i++){
+            cin >> x >> r;
+            if (r > (w/2)){
+            t = sqrt(r*r-(w/2)*(w/2));
+            a[i] = {x-t, x+t};
+            a[i].first = max(a[i].first,0.0);
+            a[i].second = min(a[i].second,  l);
+            if (a[i].first == 0.0){
+                flag1 = true;
+            }
+            if (a[i].second == (l)){
+                flag2 = true;
+            }
+            }else{
+                a[i] = {0.0, 0.0};
+            }
+        }
+        if (!flag1 || !flag2){
+            printf("%d\n", -1);
+        }else{
+            sort(a.begin(), a.end());
+            curmax = 0;
+            for (int i = 0; i < n; i++){
+                if (a[i].first <= curmax){
+                    curmax = max(curmax, a[i].second);
+                }
+                //cout << a[i].first << ' ' << a[i].second << endl;
+            }
+            if (curmax !=  l){
+                printf("%d\n", -1);
+            }else{
+                cur = 0;
+                ans = 0;
+                c = 0;
+                while (c < n && cur < l){
+                    mx = 0;
+                    while (c < n && a[c].first <= cur){
+                        mx = max(mx, a[c].second);
+                        c++;
+                    }
+                    cur = mx;
+                    ans++;
+                }
+                printf("%d\n", ans);
+            }
+        }
+
+    }
+    
+    return 0;
+}
