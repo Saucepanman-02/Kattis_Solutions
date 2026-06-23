@@ -1,0 +1,179 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define speedup ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+#define usopen(filename) do{freopen(filename".in", "r", stdin); freopen(filename".out", "w", stdout);}while(0);
+#define f first
+#define s second
+#define ll long long
+#define db double
+#define pii pair<int, int>
+#define pdd pair<db, db>
+#define vi vector<int>
+#define vll vector<ll>
+
+vector<string> g;
+vector<string> gc;
+vector<vector<int>> vis;
+int dx[] = {-1, 1, 0, 0};
+int dy[] = {0, 0, 1, -1};
+int n, m;
+vector<pii> v;
+vi cnt;
+int cc;
+
+void sdfs(int x, int y, char c){
+    if (x < 0 || x >= n || y < 0 || y >= m){
+        return;
+    }
+    if (g[x][y] == '.'){
+        return;
+    }
+    if (vis[x][y]){
+        return;
+    }
+    vis[x][y] = 1;
+    gc[x][y] = c;
+    if (make_pair(x, y) == v[0] || make_pair(x, y) == v[1]){
+        gc[x][y] = 'T';
+        if (gc[x-1][y] == c){
+            sdfs(x+1, y, c);
+        }else if (gc[x+1][y] == c){
+            sdfs(x-1, y, c);
+        }else if (gc[x][y+1] == c){
+            sdfs(x, y-1, c);
+        }else{
+            sdfs(x, y+1, c);
+        }
+        return;
+    }
+
+    for (int i = 0; i < 4; i++){
+        sdfs(x+dx[i], y+dy[i], c);
+    }
+}
+
+void odfs(int x, int y){
+    if (x < 0 || x >= n || y < 0 || y >= m){
+        return;
+    }
+    if (g[x][y] != '.'){
+        return;
+    }
+    if (vis[x][y]){
+        return;
+    }
+    gc[x][y] = 'O';
+    vis[x][y] = 1;
+    for (int i = 0; i < 4; i++){
+        odfs(x+dx[i], y+dy[i]);
+    }
+}
+
+
+void dfs(int x, int y){
+    if (x < 0 || x >= n || y < 0 || y >= m){
+        return;
+    }
+    if (vis[x][y]){
+        return;
+    }
+    vis[x][y]=1;
+    if (g[x][y] == '.'){
+        cc++;
+        for (int i = 0; i < 4; i++){
+            dfs(x+dx[i], y+dy[i]);
+        }
+    }else{
+        cnt[gc[x][y]-'A']++;
+    }
+}
+int main() {
+    speedup
+    cin >> n >> m;
+    g.resize(n);
+    for (int i = 0; i < n; i++){
+        cin >> g[i];
+    }
+    vis.assign(n, vector<int>(m, 0));
+    gc = g;
+    for (int i = 1; i < n-1; i++){
+        for (int j = 1; j < m-1; j++){
+            if (g[i][j] == 'X' && g[i-1][j] == 'X' && g[i+1][j] == 'X' && g[i][j-1] == 'X' && g[i][j+1] == 'X'){
+                v.push_back({i, j});
+            }
+        }
+    }
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < m; j++){
+            if (g[i][j] == 'A'){
+                sdfs(i, j, 'A');
+                for (auto u: v){
+                    vis[u.f][u.s] = 0;
+                }
+            }
+            if (g[i][j] == 'B'){
+                sdfs(i, j, 'B');
+                for (auto u: v){
+                    vis[u.f][u.s] = 0;
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++){
+        if (g[i][0] == '.' && !vis[i][0]){
+            odfs(i, 0);
+        }
+        if (g[i][m-1] == '.' && !vis[i][m-1]){
+            odfs(i, m-1);
+        }
+    }
+    for (int i = 0; i < m; i++){
+        if (g[0][i] == '.' && !vis[0][i]){
+            odfs(0, i);
+        }
+        if (g[n-1][i] == '.' && !vis[n-1][i]){
+            odfs(n-1, i);
+        }
+    }
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < m; j++){
+            if (i == 0 || i == n-1 || j == 0 || j == m-1){
+                continue;
+            }
+            if (gc[i-1][j] == 'O' || gc[i][j-1] == 'O' || gc[i+1][j] == 'O' || gc[i][j+1] == 'O'){
+                continue;
+            }
+            if (v[0] == make_pair(i, j) || v[1] == make_pair(i, j)){
+                continue;
+            }
+            if (gc[i][j] == 'A' || gc[i][j] == 'B')
+                gc[i][j] += 2;
+        }
+    }
+    /*for (int i = 0; i < n; i++){
+        cout << gc[i] << endl;
+    }*/
+    int ar = 0, br = 0, ur = 0;
+    vis.assign(n, vector<int>(m, 0));
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < m; j++){
+            if (gc[i][j] == '.' && !vis[i][j]){
+                cc = 0;
+                cnt.assign(4, 0);
+                dfs(i, j);
+                if (cnt[0]){
+                    ar += cc;
+                }else if (cnt[1]){
+                    br += cc;
+                }else{
+                    ur += cc;
+                }
+            }
+        }
+    }
+    cout << ar << ' ' << br << ' ' << ur << endl;
+    return 0;
+}
