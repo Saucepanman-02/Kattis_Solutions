@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define speedup ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+#define usopen(filename) do{freopen(filename".in", "r", stdin); freopen(filename".out", "w", stdout);}while(0);
+#define f first
+#define s second
+#define ll long long
+#define db double
+#define pii pair<int, int>
+#define pdd pair<db, db>
+#define vi vector<int>
+#define vll vector<ll>
+
+int main(){
+    int n; cin >> n;
+    ll ans = 0;
+    for (int i = 0; i < n; i++) {
+        char c; cin >> c;
+        if (c == 'O')
+            ans += (1LL << (n-1-i));
+    }
+    cout << ans << endl;
+    return 0;
+}
